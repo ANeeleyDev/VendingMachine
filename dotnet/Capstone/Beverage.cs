@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Capstone.Vending_Machine_Items
+namespace Capstone
 {
-    class Gum : IVendingMachineItem
+    public class Beverage : IVendingMachineItem
     {
         public string ItemName { get; set; }
         public decimal ItemPrice { get; set; }
         public int ItemAmountInInventory { get; set; }
-        public Gum(string itemName, decimal itemPrice, int itemAmountInInventory)
+        public Beverage(string itemName, decimal itemPrice, int itemAmountInInventory)
         {
             this.ItemName = itemName;
             this.ItemPrice = itemPrice;

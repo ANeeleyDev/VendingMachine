@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Capstone
 {
-    class Log
+    public class Log
     {
     }
 }
