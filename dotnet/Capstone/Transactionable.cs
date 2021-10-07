@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Capstone
 {
-    public class Transaction
+    public class Transactionable
     {
         public decimal VendingMachineBalance { get; private set; }
         public decimal MoneyFed()

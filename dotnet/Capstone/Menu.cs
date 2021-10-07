@@ -7,6 +7,7 @@ namespace Capstone
 {
     public class Menu
     {
+        
         public static void MainMenu()
         {
             Console.WriteLine($"Thank you for choosing the Vendo-Matic 800. Please select from one of the following options:");
@@ -16,35 +17,67 @@ namespace Capstone
             string mainMenuUserInput = Console.ReadLine();
             int mainMenuUserInputParsedToInt = int.Parse(mainMenuUserInput);
 
+
             if (mainMenuUserInputParsedToInt == 1)
             {
-                MenuItemsDisplayed();
+                MainMenu.MenuItemsDisplayed();
             }
-
-            void MenuItemsDisplayed() 
+            else if (mainMenuUserInputParsedToInt == 2)
             {
+                Console.WriteLine($"(1) Feed Money");
+                Console.WriteLine($"(2) Select Product");
+                Console.WriteLine($"(3) Finish Transaction");
+                string purchaseMenuUserInput = Console.ReadLine();
+                int purchaseMenuUserInputParsedToInt = int.Parse(purchaseMenuUserInput);
 
-                string directory = Environment.CurrentDirectory;
-                string sourceFile = "vendingmachine.csv";
-                string fullPath = Path.Combine(directory, sourceFile);
-
-                try
+                if (purchaseMenuUserInputParsedToInt ==1)
                 {
-                    using (StreamReader sr = new StreamReader(fullPath))
+                    Console.WriteLine($"Select dollar amount to feed into vending machine numbers 1 - 5, then select number 6 when ready to select items:");
+                    Console.WriteLine($"(1) $1.00");
+                    Console.WriteLine($"(2) $2.00");
+                    Console.WriteLine($"(3) $5.00");
+                    Console.WriteLine($"(4) $10.00");
+                    Console.WriteLine($"(5) $20.00");
+                    Console.WriteLine($"(6) select vending machine items");
+                    decimal vendingMachineMoneyBalance = 0;
+                    string userInputDollarAmountNumber = Console.ReadLine();
+                    int userInputDollarAmountNumberParsedToInt = int.Parse(userInputDollarAmountNumber);
+                    if (userInputDollarAmountNumberParsedToInt == 1)
+                    {                                    //TO DO:::::::: LOOK HERE YOU FOOLS!
+                        vendingMachineMoneyBalance += 1; // create loop asking if user wants to keep inputting more money.
+                    }                                    // show balace after each dollar amount inputted. 
+                    else if (userInputDollarAmountNumberParsedToInt == 2)
                     {
-                        while (!sr.EndOfStream)
-                        {
-                            string currentline = sr.ReadLine();
-                            Console.WriteLine(currentline);
-                        }
+                        vendingMachineMoneyBalance += 2;
                     }
-                }
-                catch (Exception)
-                {
-
-                    Console.WriteLine($"You selected an incorrect number. Please choose a number between 1 and 3");
+                    else if (userInputDollarAmountNumberParsedToInt == 3)
+                    {
+                        vendingMachineMoneyBalance += 5;
+                    }
+                    else if (userInputDollarAmountNumberParsedToInt == 4)
+                    {
+                        vendingMachineMoneyBalance += 10;
+                    }
+                    else if (userInputDollarAmountNumberParsedToInt == 5)
+                    {
+                        vendingMachineMoneyBalance += 20;
+                    }
+                    else if (userInputDollarAmountNumberParsedToInt == 6)
+                    {
+                        //reutrn to main menu at this point
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Invalid number entered, please select a number between 1 and 5");
+                    }
+                    
+                         
+                       
                 }
             }
+
+
+          
         }
         
 
