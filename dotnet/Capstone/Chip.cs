@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Capstone
 {
-    public class Chips : VendingMachineItem
+    public class Chip : VendingMachineItem
     {
-        public Chips(string itemName, decimal itemPrice, int itemAmountInInventory)
+        public Chip(string itemName, decimal itemPrice, int itemAmountInInventory)
         {
             this.ItemName = itemName;
             this.ItemPrice = itemPrice;
