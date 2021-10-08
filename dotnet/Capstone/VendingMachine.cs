@@ -63,6 +63,7 @@ namespace Capstone
                 Console.WriteLine(item.Key + "|" + item.Value.ItemName + "|$" + item.Value.ItemPrice + "|" + item.Value.ItemAmountInInventory + " in stock");
 
             }
+            Console.WriteLine("");
         }
 
     }
