@@ -16,5 +16,10 @@ namespace Capstone
             this.ItemAmountInInventory = itemAmountInInventory;
 
         }
+
+        Beverage drink1 = new Beverage("Cola", 1.25M, 5);
+        Beverage drink2 = new Beverage("Dr. Salt", 1.50M, 5);
+        Beverage drink3 = new Beverage("Mountain Melter", 1.50M, 5);
+        Beverage drink4 = new Beverage("Heavy", 1.50M, 5);
     }
 }

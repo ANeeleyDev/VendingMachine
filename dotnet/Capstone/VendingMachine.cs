@@ -8,6 +8,10 @@ namespace Capstone
     public class VendingMachine
     {
         Dictionary<string, IVendingMachineItem> inventory = new Dictionary<string, IVendingMachineItem>(); //Dictionary<slot number, instance of a vending machine item>
+        Dictionary
+        
+        inventory["A1"] = Chips.chip1;
+        
         public void LoadInventory()
         {
             string directory = Environment.CurrentDirectory;
@@ -20,25 +24,7 @@ namespace Capstone
             // TODO write code for when items are sold out
             // TODO money returned code (25 cent, 10 cent, 5 cent)
             // TODO log class
-            try
-            {
-                using (StreamReader sr = new StreamReader(fullPath, true))
-                {
-                    List<string> listOfVendingMachineItems = new List<string>();
-                    while (!sr.EndOfStream)
-                    {
-                        string currentline = sr.ReadLine();
-                        string[] listOfVendingMachineItemsInArray = currentline.Split('|');
-                        listOfVendingMachineItems.AddRange(listOfVendingMachineItemsInArray);
-                        Console.WriteLine(listOfVendingMachineItems);
-                    }
-                }
-            }
-            catch (Exception)
-            {
 
-                Console.WriteLine($"You selected an incorrect number. Please choose a number between 1 and 3");
-            }
         }
 
 
@@ -49,3 +35,60 @@ namespace Capstone
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+//try
+//{
+//    using (StreamReader sr = new StreamReader(fullPath, true))
+//    {
+//        List<string> listOfVendingMachineItems = new List<string>();
+//        while (!sr.EndOfStream)
+//        {
+//            string currentline = sr.ReadLine();
+//            string[] arrayOfVendingMachineItems = currentline.Split('|');
+
+//            for (int i = 0; i < arrayOfVendingMachineItems.Length; i++)
+//            {
+//                if (i <= 15)
+//                {
+//                    Chips chip = new Chips();
+//                }
+//            }
+
+
+//            //foreach (string item in arrayOfVendingMachineItems)
+//            //{
+//            //    Console.WriteLine(item);
+//            //}
+
+//            //foreach (var item in arrayOfVendingMachineItems)
+//            //{
+//            //    if (arrayOfVendingMachineItems[3] == "Chip")
+//            //    {
+//            //        Chips arrayOfVendingMachineItems[0] = new Chips(arrayOfVendingMachineItems[1], decimal.Parse(arrayOfVendingMachineItems[2]), 5);
+//            //    }
+//            //}
+
+
+//            //Array["A1", "Potato Crisps", "3.05", "Chip", "A2", "Stackers", "1.45", "Chip"]
+
+
+//            //listOfVendingMachineItems.AddRange(arrayOfVendingMachineItems);
+//            //Console.WriteLine(listOfVendingMachineItems);
+//        }
+//    }
+//}
+//catch (Exception)
+//{
+
+//    Console.WriteLine($"You selected an incorrect number. Please choose a number between 1 and 3");
+//}

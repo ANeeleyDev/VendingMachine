@@ -16,5 +16,10 @@ namespace Capstone
             this.ItemAmountInInventory = itemAmountInInventory;
 
         }
+
+        Gum gum1 = new Gum("U-Chews", 0.85M, 5);
+        Gum gum2 = new Gum("Little League Chew", 0.95M, 5);
+        Gum gum3 = new Gum("Chiclets", 0.75M, 5);
+        Gum gum4 = new Gum("Triplemint", 0.75M, 5);
     }
 }

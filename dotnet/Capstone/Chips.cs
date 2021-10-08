@@ -16,5 +16,12 @@ namespace Capstone
             this.ItemAmountInInventory = itemAmountInInventory;
 
         }
+
+        Chips chip1 = new Chips("Potato Crisps", 3.05M, 5);
+        Chips chip2 = new Chips("Stackers", 1.45M, 5);
+        Chips chip3 = new Chips("Grain Waves", 2.75M, 5);
+        Chips chip4 = new Chips("Cloud Popcorn", 3.65M, 5);
+
+
     }
 }
