@@ -2,15 +2,14 @@
 
 namespace Capstone
 {
-    class Program
+    public class Program
     {
         public static void Main(string[] args)
         {
+            VendingMachine newApplication = new VendingMachine();
             Menu.Greeting();
             Menu.MainMenu();
-
-
-
+            newApplication.getMainMenuInput();
         }
     }
 }

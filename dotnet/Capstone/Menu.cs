@@ -17,51 +17,18 @@ namespace Capstone
             Console.WriteLine($"(1) Display Vending Machine Items");
             Console.WriteLine($"(2) Purchase");
             Console.WriteLine($"(3) Exit");
+        }
 
-            string mainMenuUserInput = Console.ReadLine();
-            int mainMenuUserInputParsedToInt = int.Parse(mainMenuUserInput);
-
-            if (mainMenuUserInputParsedToInt == 1)
-            {
-                VendingMachine newApplication = new VendingMachine();
-
-                newApplication.MakeDictionaryForInventory();
-                newApplication.DisplayMenuItems();
-
-                MainMenu();
-            }
-
-            else if (mainMenuUserInputParsedToInt == 2)
-            {
-                PurchaseMenu();
-            }
-
-            static void PurchaseMenu()
-            {
+        public static void PurchaseMenu()
+        {
                 Console.WriteLine($"Please select one of the following options:");
                 Console.WriteLine($"(1) Feed Money");
                 Console.WriteLine($"(2) Select Product");
                 Console.WriteLine($"(3) Finish Transaction");
-                Console.WriteLine($"");
-                Console.WriteLine("Current money provided: $" + Transactionable.amountFed);
+                Console.WriteLine($"");               
+        }
 
-                string purchaseMenuUserInput = Console.ReadLine();
-                int purchaseMenuUserInputParsedToInt = int.Parse(purchaseMenuUserInput);
-
-                if (purchaseMenuUserInputParsedToInt == 1)
-                {
-                    FeedMoneyMenu();
-                }
-
-                else if (purchaseMenuUserInputParsedToInt == 2)
-                {
-                    SelectProductMenu();
-                }
-
-
-            }
-
-            static void FeedMoneyMenu()
+            public static void FeedMoneyMenu()
             {
                 Console.WriteLine($"(1) Put in $1.00");
                 Console.WriteLine($"(2) Put in $2.00");
@@ -69,16 +36,6 @@ namespace Capstone
                 Console.WriteLine($"(4) Put in $10.00");
                 Console.WriteLine($"(5) Put in $20.00");
                 Console.WriteLine($"(6) Return to purchase menu");
-                Transactionable.MoneyFed();
-                PurchaseMenu();
-            }
-
-            static void SelectProductMenu()
-            {
-                VendingMachine newApplication2 = new VendingMachine();
-                Console.WriteLine("Please select an item using its code: (you have $" + Transactionable.amountFed + " to spend)");
-                newApplication2.DisplayMenuItems();
-
             }
 
             //    //if (mainMenuUserInputParsedToInt == 1)
@@ -121,6 +78,6 @@ namespace Capstone
             //Purchase Menu (1. Feed Money, 2. Select Product, 3. Finish Transaction)
             //Dollar Amount List Menu (user can select $1, $2, $5, $10 to add to their moneyFed)
 
-        }
+        
     }
 }

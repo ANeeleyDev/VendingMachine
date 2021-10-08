@@ -7,9 +7,10 @@ namespace Capstone
 {
     public class VendingMachine
     {
+        Dictionary<string, VendingMachineItem> inventoryInDictionary = new Dictionary<string, VendingMachineItem>();
         public Dictionary<string, VendingMachineItem> MakeDictionaryForInventory()
         {
-            Dictionary<string, VendingMachineItem> inventoryInDictionary = new Dictionary<string, VendingMachineItem>();
+            
             string directory = Environment.CurrentDirectory;
             string sourceFile = "vendingmachine.csv";
             string fullPath = Path.Combine(directory, sourceFile);
@@ -56,11 +57,119 @@ namespace Capstone
             return inventoryInDictionary;
         }
 
+        public void getMainMenuInput()
+        {
+            string mainMenuUserInput = Console.ReadLine();
+            int mainMenuUserInputParsedToInt = int.Parse(mainMenuUserInput);
+
+            if (mainMenuUserInputParsedToInt == 1)
+            {
+                DisplayMenuItems();
+
+                Menu.MainMenu();
+                getMainMenuInput();
+            }
+
+            else if (mainMenuUserInputParsedToInt == 2)
+            {
+                Menu.PurchaseMenu();
+                getPurchaseMenuInput();
+            }
+        }
+
+ 
+        public void getPurchaseMenuInput()
+        {
+            string purchaseMenuUserInput = Console.ReadLine();
+            int purchaseMenuUserInputParsedToInt = int.Parse(purchaseMenuUserInput);
+
+            if (purchaseMenuUserInputParsedToInt == 1)
+            {
+                Menu.FeedMoneyMenu();
+                MoneyFed();
+                Menu.PurchaseMenu();
+                Console.WriteLine("Current money provided: $" + amountFed);              
+                getPurchaseMenuInput();
+            }
+
+            else if (purchaseMenuUserInputParsedToInt == 2)
+            {                                            
+                DisplayMenuItems();
+                Console.WriteLine("");
+                Console.WriteLine("Please enter a code for one of the following items. You have $" + amountFed + " to spend.");
+                subtractItemFromInventory();
+                DisplayMenuItems();
+                Console.WriteLine("Please enter a code for one of the following items. You have $" + amountFed + " to spend.");
+
+            }
+        }
+
+        public void subtractItemFromInventory() //based on code user entered
+        {
+            string selectMenuUserInput = Console.ReadLine();
+            foreach (KeyValuePair<string, VendingMachineItem> item in inventoryInDictionary)
+            {
+                if (item.Key == selectMenuUserInput)
+                {
+                    item.Value.ItemAmountInInventory = item.Value.ItemAmountInInventory - 1;
+                    amountFed = amountFed - item.Value.ItemPrice;
+                }
+            }
+        }
+
+        public decimal amountFed { get; private set; } = 0;
+        public void MoneyFed()
+        {
+            string feedMoneyUserInput = Console.ReadLine();
+            int feedMoneyUserInputParsed = int.Parse(feedMoneyUserInput);
+
+            if (feedMoneyUserInputParsed == 1)
+            {
+                amountFed += 1;
+            }
+            else if (feedMoneyUserInputParsed == 2)
+            {
+                amountFed += 2;
+            }
+            else if (feedMoneyUserInputParsed == 3)
+            {
+                amountFed += 5;
+            }
+            else if (feedMoneyUserInputParsed == 4)
+            {
+                amountFed += 10;
+            }
+            else if (feedMoneyUserInputParsed == 5)
+            {
+                amountFed += 20;
+            }
+            else if (feedMoneyUserInputParsed == 6) //return to purchase menu at this point
+            {
+                amountFed += 0;
+            }
+            else
+            {
+                Console.WriteLine($"Invalid number entered, please select a number between 1 and 6");
+            }
+        }
+
+
         public void DisplayMenuItems()
         {
             foreach (KeyValuePair<string, VendingMachineItem> item in MakeDictionaryForInventory())
             {
-                Console.WriteLine(item.Key + "|" + item.Value.ItemName + "|$" + item.Value.ItemPrice + "|" + item.Value.ItemAmountInInventory + " in stock");
+                Console.WriteLine(item.Key + " | " + item.Value.ItemName + " | $" + item.Value.ItemPrice + " | " + item.Value.ItemAmountInInventory + " in stock");
+
+            }
+            Console.WriteLine("");
+        }
+
+        public void subtractItemPrice()
+        {
+            MakeDictionaryForInventory();
+            foreach (KeyValuePair<string, VendingMachineItem> item in MakeDictionaryForInventory())
+            {
+                
 
             }
             Console.WriteLine("");
