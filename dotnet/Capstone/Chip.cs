@@ -14,7 +14,15 @@ namespace Capstone
 
         }
 
-       
+        public override string PrintedMessage()
+        {
+            return "Crunch Crunch, Yum!";
+        }
+
+        //All chip items print "Crunch Crunch, Yum!"
+        //All candy items print "Munch Munch, Yum!"
+        //All drink items print "Glug Glug, Yum!"
+        //All gum items print "Chew Chew, Yum!"
 
 
     }

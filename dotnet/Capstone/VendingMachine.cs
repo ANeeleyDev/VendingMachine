@@ -97,9 +97,18 @@ namespace Capstone
                 DisplayMenuItems();
                 Console.WriteLine("");
                 Console.WriteLine("Please enter a code for one of the following items. You have $" + amountFed + " to spend.");
-                subtractItemFromInventory();
-                DisplayMenuItems();
-                Console.WriteLine("Please enter a code for one of the following items. You have $" + amountFed + " to spend.");
+                //if (amountFed < 0.75M)
+                //{
+                //    Console.WriteLine("Insufficient funds");
+                //    Menu.PurchaseMenu();
+                //    Console.WriteLine("Current money provided: $" + amountFed);
+                //    getPurchaseMenuInput();
+                //}
+                //else
+                {
+                    subtractItemFromInventory();
+                }
+
 
             }
         }
@@ -111,8 +120,26 @@ namespace Capstone
             {
                 if (item.Key == selectMenuUserInput)
                 {
+                    if (item.Value.ItemAmountInInventory == 0)
+                    {
+                        Console.WriteLine(item.Key + " | " + item.Value.ItemName + " | SOLD OUT!");
+                        Menu.PurchaseMenu();
+                        Console.WriteLine("Current money provided: $" + amountFed);
+                        getPurchaseMenuInput();
+                    }
+                    if (amountFed < item.Value.ItemPrice)
+                    {
+                        Console.WriteLine("Insufficient funds, feed more money");
+                        Menu.PurchaseMenu();
+                        Console.WriteLine("Current money provided: $" + amountFed);
+                        getPurchaseMenuInput();
+                    }
                     item.Value.ItemAmountInInventory = item.Value.ItemAmountInInventory - 1;
                     amountFed = amountFed - item.Value.ItemPrice;
+                    Console.WriteLine(item.Value.PrintedMessage());
+                    Menu.PurchaseMenu();
+                    Console.WriteLine("Current money provided: $" + amountFed);
+                    getPurchaseMenuInput();
                 }
             }
         }
@@ -156,21 +183,17 @@ namespace Capstone
 
         public void DisplayMenuItems()
         {
-            foreach (KeyValuePair<string, VendingMachineItem> item in MakeDictionaryForInventory())
+            foreach (KeyValuePair<string, VendingMachineItem> item in inventoryInDictionary)
             {
-                Console.WriteLine(item.Key + " | " + item.Value.ItemName + " | $" + item.Value.ItemPrice + " | " + item.Value.ItemAmountInInventory + " in stock");
-
-            }
-            Console.WriteLine("");
-        }
-
-        public void subtractItemPrice()
-        {
-            MakeDictionaryForInventory();
-            foreach (KeyValuePair<string, VendingMachineItem> item in MakeDictionaryForInventory())
-            {
-                
-
+                if (item.Value.ItemAmountInInventory == 0)
+                {
+                    Console.WriteLine(item.Key + " | " + item.Value.ItemName + " | SOLD OUT!");
+                }
+                else
+                {
+                    Console.WriteLine(item.Key + " | " + item.Value.ItemName + " | $" + item.Value.ItemPrice + " | " + item.Value.ItemAmountInInventory + " in stock");
+                }
+               
             }
             Console.WriteLine("");
         }

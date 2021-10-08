@@ -5,12 +5,15 @@ using System.IO;
 
 namespace Capstone
 {
-    public class VendingMachineItem
+    public class VendingMachineItem : IPrintedMessage
     {
         public string ItemName { get; set; }
         public decimal ItemPrice { get; set; }
         public int ItemAmountInInventory { get; set; }
-
+        public virtual string PrintedMessage()
+        {
+            return "";
+        }
 
     }
 }
