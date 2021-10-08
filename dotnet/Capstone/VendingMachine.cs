@@ -122,14 +122,7 @@ namespace Capstone
             string selectMenuUserInput = Console.ReadLine();
             foreach (KeyValuePair<string, VendingMachineItem> item in inventoryInDictionary)
             {
-                if (selectMenuUserInput != item.Key)
-                {
-                    Console.WriteLine("Invalid entry");
-                    Menu.PurchaseMenu();
-                    Console.WriteLine("Current money provided: $" + amountFed);
-                    getPurchaseMenuInput();
-                }
-                else if (selectMenuUserInput == item.Key)
+                if (selectMenuUserInput == item.Key)
                 {
                     if (item.Value.ItemAmountInInventory == 0)
                     {
@@ -155,7 +148,12 @@ namespace Capstone
                         getPurchaseMenuInput();
                     }
                 }
+
             }
+            Console.WriteLine("Invalid entry");
+            Menu.PurchaseMenu();
+            Console.WriteLine("Current money provided: $" + amountFed);
+            getPurchaseMenuInput();
         }
 
         public decimal amountFed { get; private set; } = 0;
