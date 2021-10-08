@@ -109,7 +109,11 @@ namespace Capstone
                     subtractItemFromInventory();
                 }
 
-
+            }
+            else if (purchaseMenuUserInputParsedToInt == 3)
+            {
+                finishTransaction();
+                Console.WriteLine("Thank you for your business!");
             }
         }
 
@@ -118,7 +122,14 @@ namespace Capstone
             string selectMenuUserInput = Console.ReadLine();
             foreach (KeyValuePair<string, VendingMachineItem> item in inventoryInDictionary)
             {
-                if (item.Key == selectMenuUserInput)
+                if (selectMenuUserInput != item.Key)
+                {
+                    Console.WriteLine("Invalid entry");
+                    Menu.PurchaseMenu();
+                    Console.WriteLine("Current money provided: $" + amountFed);
+                    getPurchaseMenuInput();
+                }
+                else if (selectMenuUserInput == item.Key)
                 {
                     if (item.Value.ItemAmountInInventory == 0)
                     {
@@ -127,19 +138,22 @@ namespace Capstone
                         Console.WriteLine("Current money provided: $" + amountFed);
                         getPurchaseMenuInput();
                     }
-                    if (amountFed < item.Value.ItemPrice)
+                    else if (amountFed < item.Value.ItemPrice)
                     {
                         Console.WriteLine("Insufficient funds, feed more money");
                         Menu.PurchaseMenu();
                         Console.WriteLine("Current money provided: $" + amountFed);
                         getPurchaseMenuInput();
                     }
-                    item.Value.ItemAmountInInventory = item.Value.ItemAmountInInventory - 1;
-                    amountFed = amountFed - item.Value.ItemPrice;
-                    Console.WriteLine(item.Value.PrintedMessage());
-                    Menu.PurchaseMenu();
-                    Console.WriteLine("Current money provided: $" + amountFed);
-                    getPurchaseMenuInput();
+                    else
+                    {
+                        item.Value.ItemAmountInInventory = item.Value.ItemAmountInInventory - 1;
+                        amountFed = amountFed - item.Value.ItemPrice;
+                        Console.WriteLine(item.Value.PrintedMessage());
+                        Menu.PurchaseMenu();
+                        Console.WriteLine("Current money provided: $" + amountFed);
+                        getPurchaseMenuInput();
+                    }
                 }
             }
         }
@@ -196,6 +210,18 @@ namespace Capstone
                
             }
             Console.WriteLine("");
+        }
+
+        public void finishTransaction()
+        {
+            decimal quarterRemainder = amountFed % 0.25M;
+            decimal numberOfQuarters = (amountFed - quarterRemainder) / 0.25M;
+            decimal dimeRemainder = quarterRemainder % 0.10M;
+            decimal numberOfDimes = (quarterRemainder - dimeRemainder) / 0.10M;
+            decimal numberOfNickels = dimeRemainder / 0.05M;
+            decimal totalChangeBack = ((numberOfQuarters * 0.25M) + (numberOfDimes * 0.10M) + (numberOfNickels * 0.05M));
+
+            Console.WriteLine("Your total change back is $" + totalChangeBack + " (" + numberOfQuarters + " quarters, " + numberOfDimes + " dimes, " + numberOfNickels + " nickels.)");
         }
 
     }
