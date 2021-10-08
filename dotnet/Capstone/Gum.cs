@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Capstone
 {
-    public class Gum : IVendingMachineItem
+    public class Gum : VendingMachineItem
     {
         public string ItemName { get; set; }
         public decimal ItemPrice { get; set; }
