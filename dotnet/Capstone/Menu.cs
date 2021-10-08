@@ -14,23 +14,23 @@ namespace Capstone
             Console.WriteLine($"(1) Display Vending Machine Items");
             Console.WriteLine($"(2) Purchase");
             Console.WriteLine($"(3) Exit");
-            string mainMenuUserInput = Console.ReadLine();
-            int mainMenuUserInputParsedToInt = int.Parse(mainMenuUserInput);
+        }
 
-            if (mainMenuUserInputParsedToInt == 1)
-            {
-                VendingMachine newFile = new VendingMachine();
-                //Console.WriteLine(newFile.LoadInventoryIntoSeparateLinesInAList());
-                //Console.WriteLine(newFile.MakeDictionaryForInventory());
-                
+        public static void PurchaseMenu()
+        {
+            Console.WriteLine($"(1) Feed Money");
+            Console.WriteLine($"(2) Select Product");
+            Console.WriteLine($"(3) Finish Transaction");
+        }
 
-                newFile.MakeDictionaryForInventory();
-                foreach (var item in newFile.MakeDictionaryForInventory())
-                {
-                    Console.WriteLine(item);
-                }
-
-            }
+        public static void FeedMoneyMenu()
+        {
+            Console.WriteLine($"(1) Put in $1.00");
+            Console.WriteLine($"(2) Put in $2.00");
+            Console.WriteLine($"(3) Put in $5.00");
+            Console.WriteLine($"(4) Put in $10.00");
+            Console.WriteLine($"(5) Put in $20.00");
+            Console.WriteLine($"(6) Select item(s) to purchase");
         }
 
         //    //if (mainMenuUserInputParsedToInt == 1)
@@ -56,35 +56,7 @@ namespace Capstone
         //        Console.WriteLine($"(6) select vending machine items");
         //        decimal vendingMachineMoneyBalance = 0;
         //        string userInputDollarAmountNumber = Console.ReadLine();
-        //        int userInputDollarAmountNumberParsedToInt = int.Parse(userInputDollarAmountNumber);
-        //        if (userInputDollarAmountNumberParsedToInt == 1)
-        //        {                                    //TO DO:::::::: LOOK HERE YOU FOOLS!
-        //            vendingMachineMoneyBalance += 1; // create loop asking if user wants to keep inputting more money.
-        //        }                                    // show balace after each dollar amount inputted. 
-        //        else if (userInputDollarAmountNumberParsedToInt == 2)
-        //        {
-        //            vendingMachineMoneyBalance += 2;
-        //        }
-        //        else if (userInputDollarAmountNumberParsedToInt == 3)
-        //        {
-        //            vendingMachineMoneyBalance += 5;
-        //        }
-        //        else if (userInputDollarAmountNumberParsedToInt == 4)
-        //        {
-        //            vendingMachineMoneyBalance += 10;
-        //        }
-        //        else if (userInputDollarAmountNumberParsedToInt == 5)
-        //        {
-        //            vendingMachineMoneyBalance += 20;
-        //        }
-        //        else if (userInputDollarAmountNumberParsedToInt == 6)
-        //        {
-        //            //reutrn to main menu at this point
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine($"Invalid number entered, please select a number between 1 and 5");
-        //        }
+
 
 
 

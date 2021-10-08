@@ -25,8 +25,6 @@ namespace Capstone
                         string currentline = sr.ReadLine();
                         // ["A1", "Potato Crisps", "3.05", "Chip"]
                         string [] arrayOfVendingMachineItems = currentline.Split('|');
-                        //foreach (string item in arrayOfVendingMachineItems)
-                        //{
 
                             if (arrayOfVendingMachineItems[3] == "Gum")
                             {
@@ -48,7 +46,6 @@ namespace Capstone
                                 Chip chip = new Chip(arrayOfVendingMachineItems[1], decimal.Parse(arrayOfVendingMachineItems[2]), 5);
                                 inventoryInDictionary.Add(arrayOfVendingMachineItems[0], chip);
                             }
-                        //} 
                     }
                 }
             }
@@ -57,6 +54,15 @@ namespace Capstone
                 Console.WriteLine(e.Message);
             }
             return inventoryInDictionary;
+        }
+
+        public void DisplayMenuItems()
+        {
+            foreach (KeyValuePair<string, VendingMachineItem> item in MakeDictionaryForInventory())
+            {
+                Console.WriteLine(item.Key + "|" + item.Value.ItemName + "|$" + item.Value.ItemPrice + "|" + item.Value.ItemAmountInInventory + " in stock");
+
+            }
         }
 
     }
