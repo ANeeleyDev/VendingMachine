@@ -10,14 +10,18 @@ namespace Capstone
         public decimal ItemPrice { get; set; }
         public int ItemAmountInInventory { get; set; }
 
-        Dictionary<string, VendingMachineItem> inventory = new Dictionary<string, VendingMachineItem>(); //Dictionary<slot number, instance of a vending machine item>
+               
+
         
- 
         
+        //Dictionary<slot number, instance of a vending machine item>
+        //A1 chip1 = new Chips("Potato Crisps", 3.05M, 5);
+
+
 
     }
 
 
-   
+
 
 }
