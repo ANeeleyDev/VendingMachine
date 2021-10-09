@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
+/*TO DO:
+ * Fix bug that takes us to line 148 and tells us invalid entry when we try to close program
+ * fix invalid entry so it works when user makes an invalid entry
+ * do log
+ * write unit tests
+ * Add comments
+ */
+
+
 namespace Capstone
 {
     public class VendingMachine
@@ -121,8 +130,8 @@ namespace Capstone
         {
             string selectMenuUserInput = Console.ReadLine();
             foreach (KeyValuePair<string, VendingMachineItem> item in inventoryInDictionary)
-            {
-                if (selectMenuUserInput == item.Key)
+            {//(inventoryInDictionary.ContainsKey(selectMenuUserInput))
+                if (selectMenuUserInput == (item.Key))
                 {
                     if (item.Value.ItemAmountInInventory == 0)
                     {
@@ -148,8 +157,15 @@ namespace Capstone
                         getPurchaseMenuInput();
                     }
                 }
-
+                //else if (!selectMenuUserInput.Equals(item.Key))
+                //{
+                //    InvalidEntryMenu();
+                //}
             }
+        
+        }
+        public void InvalidEntryMenu()
+        {
             Console.WriteLine("Invalid entry");
             Menu.PurchaseMenu();
             Console.WriteLine("Current money provided: $" + amountFed);
@@ -220,6 +236,7 @@ namespace Capstone
             decimal totalChangeBack = ((numberOfQuarters * 0.25M) + (numberOfDimes * 0.10M) + (numberOfNickels * 0.05M));
 
             Console.WriteLine("Your total change back is $" + totalChangeBack + " (" + numberOfQuarters + " quarters, " + numberOfDimes + " dimes, " + numberOfNickels + " nickels.)");
+           
         }
 
     }
