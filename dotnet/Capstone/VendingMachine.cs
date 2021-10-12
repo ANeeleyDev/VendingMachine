@@ -176,24 +176,21 @@ namespace Capstone
         // This method subtracts items from the vending machine inventory, as the items are purchased by the user.
         public void subtractItemFromInventory()
         {
-
-
             // BQ Added 10-11-21
             decimal amountAfterSubtraction = 0;
 
             string selectMenuUserInput = Console.ReadLine();
-            foreach (KeyValuePair<string, VendingMachineItem> item in inventoryInDictionary)
-            {//(inventoryInDictionary.ContainsKey(selectMenuUserInput))
+            //(inventoryInDictionary.ContainsKey(selectMenuUserInput))
 
-                if (selectMenuUserInput == (item.Key))
+                if (inventoryInDictionary.ContainsKey(selectMenuUserInput))
                 {
                     // If the amount of items in the inventory is 0, then the user cannot purchase that item.  A message
                     // is displayed to the user, informing them that the item is sold out.  The purchase menu is displayed
                     // again, as well as a message that lets the user know how much they have fed into the machine to use
                     // for purchases.
-                    if (item.Value.ItemAmountInInventory == 0)
+                    if (inventoryInDictionary[selectMenuUserInput].ItemAmountInInventory == 0)
                     {
-                        Console.WriteLine(item.Key + " | " + item.Value.ItemName + " | SOLD OUT!");
+                        Console.WriteLine(inventoryInDictionary[selectMenuUserInput] + " | " + inventoryInDictionary[selectMenuUserInput].ItemName + " | SOLD OUT!");
                         Menu.PurchaseMenu();
                         Console.WriteLine("Current money provided: $" + amountFed);
                         getPurchaseMenuInput();
@@ -202,7 +199,7 @@ namespace Capstone
                     // If the user does not have enough money to buy the item, a message displays that informs the user they
                     // don't have enough money to use to purchase the selected item, and a message displays that lets the user
                     // know how much they have in the machine for purchases.
-                    else if (amountFed < item.Value.ItemPrice)
+                    else if (amountFed < inventoryInDictionary[selectMenuUserInput].ItemPrice)
                     {
                         Console.WriteLine("Insufficient funds.  Please add more money.");
                         Menu.PurchaseMenu();
@@ -214,15 +211,15 @@ namespace Capstone
                     // updated by subtracting one from that item's amount in the inventory.
                     else
                     {
-                        item.Value.ItemAmountInInventory = item.Value.ItemAmountInInventory - 1;
-                        //amountAfterSubtraction = amountFed - item.Value.ItemPrice;
-                        amountFed = amountFed - item.Value.ItemPrice;
+                        inventoryInDictionary[selectMenuUserInput].ItemAmountInInventory = inventoryInDictionary[selectMenuUserInput].ItemAmountInInventory - 1;
+                    //amountAfterSubtraction = amountFed - item.Value.ItemPrice;
+                    amountFed = amountFed - inventoryInDictionary[selectMenuUserInput].ItemPrice;
 
                         // The PrintedMessage() method is called for each item, based on that item's type.  The messages
                         // for each item type (candy, chip, drink, gum) are called from each type's class (an example of
                         // polymorphism).  The purchase menu is once-again displayed for the user to choose more items, and
                         // the amount the user has to use to make purchases is displayed.
-                        Console.WriteLine(item.Value.PrintedMessage());
+                        Console.WriteLine(inventoryInDictionary[selectMenuUserInput].PrintedMessage());
                         Menu.PurchaseMenu();
                         Console.WriteLine("Current money provided: $" + amountFed);
                         getPurchaseMenuInput();
@@ -231,11 +228,11 @@ namespace Capstone
 
 
                 }
-                //else if (!selectMenuUserInput.Equals(item.Key))
-                //{
-                //    InvalidEntryMenu();
-                //}
+                else
+            {
+                InvalidEntryMenu();
             }
+
 
 
 
