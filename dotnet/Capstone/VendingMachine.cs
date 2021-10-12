@@ -74,7 +74,6 @@ namespace Capstone
             if (mainMenuUserInputParsedToInt == 1)
             {
                 DisplayMenuItems();
-
                 Menu.MainMenu();
                 getMainMenuInput();
             }
@@ -99,6 +98,9 @@ namespace Capstone
                 Menu.PurchaseMenu();
                 Console.WriteLine("Current money provided: $" + amountFed);              
                 getPurchaseMenuInput();
+
+
+
             }
 
             else if (purchaseMenuUserInputParsedToInt == 2)
@@ -128,6 +130,9 @@ namespace Capstone
 
         public void subtractItemFromInventory() //based on code user entered
         {
+            // BQ Added 10-11-21
+            decimal amountAfterSubtraction = 0;
+
             string selectMenuUserInput = Console.ReadLine();
             foreach (KeyValuePair<string, VendingMachineItem> item in inventoryInDictionary)
             {//(inventoryInDictionary.ContainsKey(selectMenuUserInput))
@@ -150,11 +155,53 @@ namespace Capstone
                     else
                     {
                         item.Value.ItemAmountInInventory = item.Value.ItemAmountInInventory - 1;
+
+                        
+                        amountAfterSubtraction = amountFed - item.Value.ItemPrice;
+
+                        // Old line before Brad edited on 10-11-21
                         amountFed = amountFed - item.Value.ItemPrice;
+
+
                         Console.WriteLine(item.Value.PrintedMessage());
                         Menu.PurchaseMenu();
+
+                        // Old line before Brad edited on 10-11-21
                         Console.WriteLine("Current money provided: $" + amountFed);
+
+                        // BQ Added 10-11-21
+                        //Console.WriteLine("Current money provided: $" + amountAfterSubtraction);
+
                         getPurchaseMenuInput();
+                    }
+
+
+
+
+                    // BQ Added 10-11-21
+                    // Directory and file name
+                    string directory = Environment.CurrentDirectory;
+                    string filename = "Log.txt";
+
+
+                    string newBalanceAfterPurchaseAsCurrency = String.Format("{0:C}", amountAfterSubtraction);
+                    //string amountFedInCurrency = String.Format("{0:C}", amountFedBeforePurchase);
+                    string fullPath = Path.Combine(directory, filename);
+
+                    try
+                    {
+                        using (StreamWriter sw = new StreamWriter(fullPath, true))
+                        {
+                            sw.Write(DateTime.Now + " ");
+                            sw.Write(item.Value.ItemName + " " + item.Key + " ");
+                            sw.Write(amountFed + " " + newBalanceAfterPurchaseAsCurrency + " ");
+                            sw.WriteLine();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+
+                        Console.WriteLine(e.Message);
                     }
                 }
                 //else if (!selectMenuUserInput.Equals(item.Key))
@@ -172,7 +219,11 @@ namespace Capstone
             getPurchaseMenuInput();
         }
 
+        // BQ Added 10-11-21
+        public decimal exactAmountFed { get; private set; } = 0;
+
         public decimal amountFed { get; private set; } = 0;
+        
         public void MoneyFed()
         {
             string feedMoneyUserInput = Console.ReadLine();
@@ -181,22 +232,37 @@ namespace Capstone
             if (feedMoneyUserInputParsed == 1)
             {
                 amountFed += 1;
+
+                // BQ Added 10-11-21
+                exactAmountFed = 1;
             }
             else if (feedMoneyUserInputParsed == 2)
             {
                 amountFed += 2;
+
+                // BQ Added 10-11-21
+                exactAmountFed = 2;
             }
             else if (feedMoneyUserInputParsed == 3)
             {
                 amountFed += 5;
+
+                // BQ Added 10-11-21
+                exactAmountFed = 5;
             }
             else if (feedMoneyUserInputParsed == 4)
             {
                 amountFed += 10;
+
+                // BQ Added 10-11-21
+                exactAmountFed = 10;
             }
             else if (feedMoneyUserInputParsed == 5)
             {
                 amountFed += 20;
+
+                // BQ Added 10-11-21
+                exactAmountFed = 20;
             }
             else if (feedMoneyUserInputParsed == 6) //return to purchase menu at this point
             {
@@ -205,6 +271,31 @@ namespace Capstone
             else
             {
                 Console.WriteLine($"Invalid number entered, please select a number between 1 and 6");
+            }
+
+            // BQ Added 10-11-21
+            // Directory and file name
+            string directory = Environment.CurrentDirectory;
+            string filename = "Log.txt";
+
+            string exactAmountFedInCurrency = String.Format("{0:C}", exactAmountFed);
+            string amountFedInCurrency = String.Format("{0:C}", amountFed);
+            string fullPath = Path.Combine(directory, filename);
+
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(fullPath, true))
+                {
+                    sw.Write(DateTime.Now + " ");
+                    sw.Write("FEED MONEY: ");
+                    sw.Write(exactAmountFedInCurrency + " " + amountFedInCurrency + " ");
+                    sw.WriteLine();
+                }
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -237,6 +328,33 @@ namespace Capstone
 
             Console.WriteLine("Your total change back is $" + totalChangeBack + " (" + numberOfQuarters + " quarters, " + numberOfDimes + " dimes, " + numberOfNickels + " nickels.)");
            
+        }
+
+
+        // BQ ADDED 10-11-21
+        public void writingToALog()
+        {
+            //// Directory and file name
+            //string directory = Environment.CurrentDirectory;
+            //string filename = "Log.txt";
+
+            //string fullPath = Path.Combine(directory, filename);
+
+            //try
+            //{
+            //    using (StreamWriter sw = new StreamWriter(fullPath, true))
+            //    {
+            //        sw.Write(DateTime.Now + " ");
+            //        sw.Write("$" + feedMoneyUserInputParsed + " " + "$" + amountFed + " ");
+            //        sw.WriteLine();
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+
+            //    Console.WriteLine(e.Message);
+            //}
+
         }
 
     }
