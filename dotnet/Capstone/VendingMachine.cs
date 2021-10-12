@@ -14,12 +14,19 @@ using System.IO;
 
 namespace Capstone
 {
+    // This class is the driver of the program.  It contains all the important methods/functions that are the brains
+    // of the vending machine program.
     public class VendingMachine
     {
+        // Create a dictionary that will store all data from the CSV file being pulled from.
         Dictionary<string, VendingMachineItem> inventoryInDictionary = new Dictionary<string, VendingMachineItem>();
+
+        // This method gets the directory that the program and all related files are in and appends to it
+        // the file name of the CSV file from which all data is pulled.  The resulting filepath will be
+        // read from using a Streamreader.
         public Dictionary<string, VendingMachineItem> MakeDictionaryForInventory()
         {
-            
+
             string directory = Environment.CurrentDirectory;
             string sourceFile = "vendingmachine.csv";
             string fullPath = Path.Combine(directory, sourceFile);
@@ -28,34 +35,43 @@ namespace Capstone
             {
                 using (StreamReader sr = new StreamReader(fullPath, true))
                 {
-                    
+
                     while (!sr.EndOfStream)
                     {
-                        // "A1|Potato Crips|3.05|Chip"
+                        // Read each line in the CSV file and store each line in an array of strings.  The Streamreader
+                        // sees a pipe ('|') and breaks the data before it into a string, with each string having its own
+                        // index in the array.
                         string currentline = sr.ReadLine();
-                        // ["A1", "Potato Crisps", "3.05", "Chip"]
-                        string [] arrayOfVendingMachineItems = currentline.Split('|');
+                        string[] arrayOfVendingMachineItems = currentline.Split('|');
 
-                            if (arrayOfVendingMachineItems[3] == "Gum")
-                            {
-                                Gum gum = new Gum(arrayOfVendingMachineItems[1], decimal.Parse(arrayOfVendingMachineItems[2]), 5);
-                                inventoryInDictionary.Add(arrayOfVendingMachineItems[0], gum);
-                            }
-                            else if (arrayOfVendingMachineItems[3] == "Candy")
-                            {
-                                Candy candy = new Candy(arrayOfVendingMachineItems[1], decimal.Parse(arrayOfVendingMachineItems[2]), 5);
-                                inventoryInDictionary.Add(arrayOfVendingMachineItems[0], candy);
-                            }
-                            else if (arrayOfVendingMachineItems[3] == "Drink")
-                            {
-                                Drink drink = new Drink(arrayOfVendingMachineItems[1], decimal.Parse(arrayOfVendingMachineItems[2]), 5);
-                                inventoryInDictionary.Add(arrayOfVendingMachineItems[0], drink);
-                            }
-                            else if (arrayOfVendingMachineItems[3] == "Chip")
-                            {
-                                Chip chip = new Chip(arrayOfVendingMachineItems[1], decimal.Parse(arrayOfVendingMachineItems[2]), 5);
-                                inventoryInDictionary.Add(arrayOfVendingMachineItems[0], chip);
-                            }
+                        // The following if/else if statements will add to the dictionary initialized above.  If the
+                        // Streamreader sees the word "Gum" in the CSV file, then a new gum object will be instantiated.
+                        // That gum object (which is a vending machine item) will have the properties that were created
+                        // in the VendingMachineItem class (i.e., name, price as a decimal, and quantity in inventory at
+                        // the start of the application).  The item will be added to the dictionary with the vending
+                        // machine item (with its properties) being the Value, and the slot number of each item being the Key.
+                        // These if/else if statements will do this for all types of vending machine items (i.e., gum,
+                        // candy, drink, chip).
+                        if (arrayOfVendingMachineItems[3] == "Gum")
+                        {
+                            Gum gum = new Gum(arrayOfVendingMachineItems[1], decimal.Parse(arrayOfVendingMachineItems[2]), 5);
+                            inventoryInDictionary.Add(arrayOfVendingMachineItems[0], gum);
+                        }
+                        else if (arrayOfVendingMachineItems[3] == "Candy")
+                        {
+                            Candy candy = new Candy(arrayOfVendingMachineItems[1], decimal.Parse(arrayOfVendingMachineItems[2]), 5);
+                            inventoryInDictionary.Add(arrayOfVendingMachineItems[0], candy);
+                        }
+                        else if (arrayOfVendingMachineItems[3] == "Drink")
+                        {
+                            Drink drink = new Drink(arrayOfVendingMachineItems[1], decimal.Parse(arrayOfVendingMachineItems[2]), 5);
+                            inventoryInDictionary.Add(arrayOfVendingMachineItems[0], drink);
+                        }
+                        else if (arrayOfVendingMachineItems[3] == "Chip")
+                        {
+                            Chip chip = new Chip(arrayOfVendingMachineItems[1], decimal.Parse(arrayOfVendingMachineItems[2]), 5);
+                            inventoryInDictionary.Add(arrayOfVendingMachineItems[0], chip);
+                        }
                     }
                 }
             }
@@ -66,11 +82,16 @@ namespace Capstone
             return inventoryInDictionary;
         }
 
+        // This method gets the main menu input from the user (i.e., the first menu the user sees, which asks the user
+        // to display the vending machine items, to choose to purchase an item, or to exit).
         public void getMainMenuInput()
         {
             string mainMenuUserInput = Console.ReadLine();
             int mainMenuUserInputParsedToInt = int.Parse(mainMenuUserInput);
 
+            // If the user chooses 1 in the menu, the DisplayMenuItems() function is called, and the vending machine
+            // items are displayed to the user.  The getMainMenuInput() function is called again, allowing for this
+            // process to loop.
             if (mainMenuUserInputParsedToInt == 1)
             {
                 DisplayMenuItems();
@@ -78,6 +99,8 @@ namespace Capstone
                 getMainMenuInput();
             }
 
+            // If the user chooses 2 in the menu, the purchase menu displays, and the user is allowed to choose
+            // options from that menu via the getPurchaseMenuInput() function.
             else if (mainMenuUserInputParsedToInt == 2)
             {
                 Menu.PurchaseMenu();
@@ -85,26 +108,33 @@ namespace Capstone
             }
         }
 
- 
+        // This method allows for the user to purchase vending machine items.
         public void getPurchaseMenuInput()
         {
             string purchaseMenuUserInput = Console.ReadLine();
             int purchaseMenuUserInputParsedToInt = int.Parse(purchaseMenuUserInput);
 
+            // If the user chooses 1, the FeedMoneyMenu(), which displays the dollar amounts the user can feed into the
+            // machine, is called.  The user has the opportunity at this point to enter a dollar amount via the 
+            // MoneyFed() method.  When the user enters the dollar amount (from a list of valid dollar amounts), the current
+            // total amount the user entered is displayed, and the purchase menu is called again (to allow for the user
+            // to enter multiple dollar amounts).
             if (purchaseMenuUserInputParsedToInt == 1)
             {
                 Menu.FeedMoneyMenu();
                 MoneyFed();
                 Menu.PurchaseMenu();
-                Console.WriteLine("Current money provided: $" + amountFed);              
+                Console.WriteLine("Current money provided: $" + amountFed);
                 getPurchaseMenuInput();
-
-
-
             }
 
+            // If the user enters 2, the method that displays the vending machine items is called again, and the user
+            // is allowed to purchase vending machine items.  The user is prompted for a code to enter (slot number for
+            // each item, e.g., A1, B4, etc.), and the program tells the user how much they have to spend on purchases.  When the
+            // user purchases an item, the subtractItemFromInventory() method is called, and the item is subtracted from the
+            // total inventory.
             else if (purchaseMenuUserInputParsedToInt == 2)
-            {                                            
+            {
                 DisplayMenuItems();
                 Console.WriteLine("");
                 Console.WriteLine("Please enter a code for one of the following items. You have $" + amountFed + " to spend.");
@@ -119,8 +149,11 @@ namespace Capstone
                 {
                     subtractItemFromInventory();
                 }
-
             }
+
+            // If the user chooses 3, the finishTransaction() method is called, the program gives back to the user the
+            // total money the user put into the machine (in quarters, dimes, and nickels), and updates the balance of the
+            // vending machine to 0.  A parting message is displayed to the user, and the program ends.
             else if (purchaseMenuUserInputParsedToInt == 3)
             {
                 finishTransaction();
@@ -128,7 +161,8 @@ namespace Capstone
             }
         }
 
-        public void subtractItemFromInventory() //based on code user entered
+        // This method subtracts items from the vending machine inventory, as the items are purchased by the user.
+        public void subtractItemFromInventory()
         {
             // BQ Added 10-11-21
             decimal amountAfterSubtraction = 0;
@@ -138,6 +172,10 @@ namespace Capstone
             {//(inventoryInDictionary.ContainsKey(selectMenuUserInput))
                 if (selectMenuUserInput == (item.Key))
                 {
+                    // If the amount of items in the inventory is 0, then the user cannot purchase that item.  A message
+                    // is displayed to the user, informing them that the item is sold out.  The purchase menu is displayed
+                    // again, as well as a message that lets the user know how much they have fed into the machine to use
+                    // for purchases.
                     if (item.Value.ItemAmountInInventory == 0)
                     {
                         Console.WriteLine(item.Key + " | " + item.Value.ItemName + " | SOLD OUT!");
@@ -145,6 +183,10 @@ namespace Capstone
                         Console.WriteLine("Current money provided: $" + amountFed);
                         getPurchaseMenuInput();
                     }
+
+                    // If the user does not have enough money to buy the item, a message displays that informs the user they
+                    // don't have enough money to use to purchase the selected item, and a message displays that lets the user
+                    // know how much they have in the machine for purchases.
                     else if (amountFed < item.Value.ItemPrice)
                     {
                         Console.WriteLine("Insufficient funds, feed more money");
@@ -152,64 +194,50 @@ namespace Capstone
                         Console.WriteLine("Current money provided: $" + amountFed);
                         getPurchaseMenuInput();
                     }
+
+                    // If the user has enough money in the machine, the item is purchased, and the inventory is
+                    // updated by subtracting one from that item's amount in the inventory.
                     else
                     {
                         item.Value.ItemAmountInInventory = item.Value.ItemAmountInInventory - 1;
-
-                        
                         amountAfterSubtraction = amountFed - item.Value.ItemPrice;
-
-                        // Old line before Brad edited on 10-11-21
                         amountFed = amountFed - item.Value.ItemPrice;
 
-
+                        // The PrintedMessage() method is called for each item, based on that item's type.  The messages
+                        // for each item type (candy, chip, drink, gum) are called from each type's class (an example of
+                        // polymorphism).  The purchase menu is once-again displayed for the user to choose more items, and
+                        // the amount the user has to use to make purchases is displayed.
                         Console.WriteLine(item.Value.PrintedMessage());
                         Menu.PurchaseMenu();
-
-                        // Old line before Brad edited on 10-11-21
                         Console.WriteLine("Current money provided: $" + amountFed);
-
-                        // BQ Added 10-11-21
-                        //Console.WriteLine("Current money provided: $" + amountAfterSubtraction);
-
                         getPurchaseMenuInput();
+                        writingToALog();
                     }
 
 
-
-
-                    // BQ Added 10-11-21
-                    // Directory and file name
-                    string directory = Environment.CurrentDirectory;
-                    string filename = "Log.txt";
-
-
-                    string newBalanceAfterPurchaseAsCurrency = String.Format("{0:C}", amountAfterSubtraction);
-                    //string amountFedInCurrency = String.Format("{0:C}", amountFedBeforePurchase);
-                    string fullPath = Path.Combine(directory, filename);
-
-                    try
-                    {
-                        using (StreamWriter sw = new StreamWriter(fullPath, true))
-                        {
-                            sw.Write(DateTime.Now + " ");
-                            sw.Write(item.Value.ItemName + " " + item.Key + " ");
-                            sw.Write(amountFed + " " + newBalanceAfterPurchaseAsCurrency + " ");
-                            sw.WriteLine();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-
-                        Console.WriteLine(e.Message);
-                    }
                 }
                 //else if (!selectMenuUserInput.Equals(item.Key))
                 //{
                 //    InvalidEntryMenu();
                 //}
             }
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
         public void InvalidEntryMenu()
         {
@@ -223,7 +251,7 @@ namespace Capstone
         public decimal exactAmountFed { get; private set; } = 0;
 
         public decimal amountFed { get; private set; } = 0;
-        
+
         public void MoneyFed()
         {
             string feedMoneyUserInput = Console.ReadLine();
@@ -312,7 +340,7 @@ namespace Capstone
                 {
                     Console.WriteLine(item.Key + " | " + item.Value.ItemName + " | $" + item.Value.ItemPrice + " | " + item.Value.ItemAmountInInventory + " in stock");
                 }
-               
+
             }
             Console.WriteLine("");
         }
@@ -327,33 +355,27 @@ namespace Capstone
             decimal totalChangeBack = ((numberOfQuarters * 0.25M) + (numberOfDimes * 0.10M) + (numberOfNickels * 0.05M));
 
             Console.WriteLine("Your total change back is $" + totalChangeBack + " (" + numberOfQuarters + " quarters, " + numberOfDimes + " dimes, " + numberOfNickels + " nickels.)");
-           
+
         }
 
 
-        // BQ ADDED 10-11-21
-        public void writingToALog()
+        public virtual void writingToALog()
         {
-            //// Directory and file name
-            //string directory = Environment.CurrentDirectory;
-            //string filename = "Log.txt";
+            string directory = Environment.CurrentDirectory;
+            string filename = "Log.txt";            
+            string fullPath = Path.Combine(directory, filename);
 
-            //string fullPath = Path.Combine(directory, filename);
-
-            //try
-            //{
-            //    using (StreamWriter sw = new StreamWriter(fullPath, true))
-            //    {
-            //        sw.Write(DateTime.Now + " ");
-            //        sw.Write("$" + feedMoneyUserInputParsed + " " + "$" + amountFed + " ");
-            //        sw.WriteLine();
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-
-            //    Console.WriteLine(e.Message);
-            //}
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(fullPath, true))
+                {
+                    sw.Write(DateTime.Now + " ");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
         }
 

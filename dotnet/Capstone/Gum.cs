@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Capstone
 {
+    // This class inherits from the VendingMachineItem class.
     public class Gum : VendingMachineItem
     {
-       
         public Gum(string itemName, decimal itemPrice, int itemAmountInInventory)
         {
             this.ItemName = itemName;
@@ -14,20 +14,11 @@ namespace Capstone
             this.ItemAmountInInventory = itemAmountInInventory;       
         }
 
+        // This method overrides the PrintedMessage() function, and allows for each item type (e.g., chip, candy, etc.)
+        // to have its own message display when that item type is purchased from the user.
         public override string PrintedMessage()
         {
             return "Chew Chew, Yum!";
         }
-        //All chip items print "Crunch Crunch, Yum!"
-        //All candy items print "Munch Munch, Yum!"
-        //All drink items print "Glug Glug, Yum!"
-        //All gum items print "Chew Chew, Yum!"
-
-        //Gum gum1 = new Gum("U-Chews", 0.85M, 5);
-        //Gum gum2 = new Gum("Little League Chew", 0.95M, 5);
-        //Gum gum3 = new Gum("Chiclets", 0.75M, 5);
-        //Gum gum4 = new Gum("Triplemint", 0.75M, 5);
-
-
     }
 }
