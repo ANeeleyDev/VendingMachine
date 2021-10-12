@@ -24,8 +24,7 @@ namespace Capstone
                 Console.WriteLine($"Please select one of the following options:");
                 Console.WriteLine($"(1) Feed Money");
                 Console.WriteLine($"(2) Select Product");
-                Console.WriteLine($"(3) Finish Transaction");
-                Console.WriteLine($"");               
+                Console.WriteLine($"(3) Finish Transaction");         
         }
 
             public static void FeedMoneyMenu()

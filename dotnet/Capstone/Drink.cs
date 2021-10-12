@@ -18,7 +18,7 @@ namespace Capstone
         // to have its own message display when that item type is purchased from the user.
         public override string PrintedMessage()
         {
-            return "Glug Glug, Yum!";
+            return "Glug Glug, Yum! Enjoy your beverage!";
         }
     }
 }

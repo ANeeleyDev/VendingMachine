@@ -86,26 +86,45 @@ namespace Capstone
         // to display the vending machine items, to choose to purchase an item, or to exit).
         public void getMainMenuInput()
         {
-            string mainMenuUserInput = Console.ReadLine();
-            int mainMenuUserInputParsedToInt = int.Parse(mainMenuUserInput);
-
-            // If the user chooses 1 in the menu, the DisplayMenuItems() function is called, and the vending machine
-            // items are displayed to the user.  The getMainMenuInput() function is called again, allowing for this
-            // process to loop.
-            if (mainMenuUserInputParsedToInt == 1)
+            try
             {
-                DisplayMenuItems();
+                string mainMenuUserInput = Console.ReadLine();
+                int mainMenuUserInputParsedToInt = int.Parse(mainMenuUserInput);
+
+                // If the user chooses 1 in the menu, the DisplayMenuItems() function is called, and the vending machine
+                // items are displayed to the user.  The getMainMenuInput() function is called again, allowing for this
+                // process to loop.
+                if (mainMenuUserInputParsedToInt == 1)
+                {
+                    DisplayMenuItems();
+                    Menu.MainMenu();
+                    getMainMenuInput();
+                }
+
+                // If the user chooses 2 in the menu, the purchase menu displays, and the user is allowed to choose
+                // options from that menu via the getPurchaseMenuInput() function.
+                else if (mainMenuUserInputParsedToInt == 2)
+                {
+                    Menu.PurchaseMenu();
+                    getPurchaseMenuInput();
+                }
+                else if (mainMenuUserInputParsedToInt == 3)
+                {
+                    Console.WriteLine("Thanks anyway.");
+                }
+                else
+                {
+                    Console.WriteLine("Invalid entry.");
+                    Menu.MainMenu();
+                    getMainMenuInput();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
                 Menu.MainMenu();
                 getMainMenuInput();
-            }
-
-            // If the user chooses 2 in the menu, the purchase menu displays, and the user is allowed to choose
-            // options from that menu via the getPurchaseMenuInput() function.
-            else if (mainMenuUserInputParsedToInt == 2)
-            {
-                Menu.PurchaseMenu();
-                getPurchaseMenuInput();
-            }
+            }           
         }
 
         // This method allows for the user to purchase vending machine items.
@@ -171,13 +190,18 @@ namespace Capstone
                 finishTransaction();
                 Console.WriteLine("Thank you for your business!");
             }
+            else
+            {
+                Console.WriteLine("Invalid entry.");
+                Menu.PurchaseMenu();
+                getPurchaseMenuInput();
+            }
         }
 
         // This method subtracts items from the vending machine inventory, as the items are purchased by the user.
         public void subtractItemFromInventory()
         {
-            // BQ Added 10-11-21
-            decimal amountAfterSubtraction = 0;
+            decimal originalAmountFed = 0;
 
             string selectMenuUserInput = Console.ReadLine();
             //(inventoryInDictionary.ContainsKey(selectMenuUserInput))
@@ -212,8 +236,33 @@ namespace Capstone
                     else
                     {
                         inventoryInDictionary[selectMenuUserInput].ItemAmountInInventory = inventoryInDictionary[selectMenuUserInput].ItemAmountInInventory - 1;
-                    //amountAfterSubtraction = amountFed - item.Value.ItemPrice;
-                    amountFed = amountFed - inventoryInDictionary[selectMenuUserInput].ItemPrice;
+                        //amountAfterSubtraction = amountFed - item.Value.ItemPrice;
+                        originalAmountFed = amountFed;
+                        amountFed = amountFed - inventoryInDictionary[selectMenuUserInput].ItemPrice;
+
+                        // Directory and file name
+                        string directory = Environment.CurrentDirectory;
+                        string filename = "Log.txt";
+
+                        string originalAmountFedInCurrency = String.Format("{0:C}", originalAmountFed);
+                        string amountFedInCurrency = String.Format("{0:C}", amountFed);
+                        string fullPath = Path.Combine(directory, filename);
+
+                        try
+                        {
+                            using (StreamWriter sw = new StreamWriter(fullPath, true))
+                            {
+                                sw.Write(DateTime.Now + " ");
+                                sw.Write(inventoryInDictionary[selectMenuUserInput].ItemName + " " + selectMenuUserInput + " ");
+                                sw.Write(originalAmountFedInCurrency + " " + amountFedInCurrency + " ");
+                                sw.WriteLine();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+
+                            Console.WriteLine(e.Message);
+                        }
 
                         // The PrintedMessage() method is called for each item, based on that item's type.  The messages
                         // for each item type (candy, chip, drink, gum) are called from each type's class (an example of
@@ -223,32 +272,13 @@ namespace Capstone
                         Menu.PurchaseMenu();
                         Console.WriteLine("Current money provided: $" + amountFed);
                         getPurchaseMenuInput();
-                        writingToALog();
+
                     }
-
-
                 }
                 else
-            {
+                {
                 InvalidEntryMenu();
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                }
 
         }
         public void InvalidEntryMenu()
@@ -368,6 +398,30 @@ namespace Capstone
 
             Console.WriteLine("Your total change back is $" + totalChangeBack + " (" + numberOfQuarters + " quarters, " + numberOfDimes + " dimes, " + numberOfNickels + " nickels.)");
 
+            // BQ Added 10-11-21
+            // Directory and file name
+            string directory = Environment.CurrentDirectory;
+            string filename = "Log.txt";
+
+            string exactAmountFedInCurrency = String.Format("{0:C}", exactAmountFed);
+            string amountFedInCurrency = String.Format("{0:C}", amountFed);
+            string fullPath = Path.Combine(directory, filename);
+
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(fullPath, true))
+                {
+                    sw.Write(DateTime.Now + " ");
+                    sw.Write("GIVE CHANGE: ");
+                    sw.Write(totalChangeBack + " $0.00");
+                    sw.WriteLine();
+                }
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.Message);
+            }
         }
 
 
@@ -394,115 +448,3 @@ namespace Capstone
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//public void LoadInventory()
-//{
-//    string directory = Environment.CurrentDirectory;
-//    string sourceFile = "vendingmachine.csv";
-//    string fullPath = Path.Combine(directory, sourceFile);
-
-//    // TODO break out the list into individual pieces
-//    // TODO consolidate menus (get rid of purchase menus class and other menu classes and make them methods instead)
-//    // TODO there are 5 items for each row
-//    // TODO write code for when items are sold out
-//    // TODO money returned code (25 cent, 10 cent, 5 cent)
-//    // TODO log class
-
-//}
-
-
-//public void DispenseItem() //itemAmountInInventory - amountOfItemPurchased
-//{
-
-//}
-
-
-
-
-
-
-
-
-
-
-
-
-//try
-//{
-//    using (StreamReader sr = new StreamReader(fullPath, true))
-//    {
-//        List<string> listOfVendingMachineItems = new List<string>();
-//        while (!sr.EndOfStream)
-//        {
-//            string currentline = sr.ReadLine();
-//            string[] arrayOfVendingMachineItems = currentline.Split('|');
-
-//            for (int i = 0; i < arrayOfVendingMachineItems.Length; i++)
-//            {
-//                if (i <= 15)
-//                {
-//                    Chips chip = new Chips();
-//                }
-//            }
-
-
-//            //foreach (string item in arrayOfVendingMachineItems)
-//            //{
-//            //    Console.WriteLine(item);
-//            //}
-
-//            //foreach (var item in arrayOfVendingMachineItems)
-//            //{
-//            //    if (arrayOfVendingMachineItems[3] == "Chip")
-//            //    {
-//            //        Chips arrayOfVendingMachineItems[0] = new Chips(arrayOfVendingMachineItems[1], decimal.Parse(arrayOfVendingMachineItems[2]), 5);
-//            //    }
-//            //}
-
-
-//            //Array["A1", "Potato Crisps", "3.05", "Chip", "A2", "Stackers", "1.45", "Chip"]
-
-
-//            //listOfVendingMachineItems.AddRange(arrayOfVendingMachineItems);
-//            //Console.WriteLine(listOfVendingMachineItems);
-//        }
-//    }
-//}
-//catch (Exception)
-//{
-
-//    Console.WriteLine($"You selected an incorrect number. Please choose a number between 1 and 3");
-//}
