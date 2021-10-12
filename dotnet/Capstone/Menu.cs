@@ -37,47 +37,5 @@ namespace Capstone
                 Console.WriteLine($"(5) Put in $20.00");
                 Console.WriteLine($"(6) Return to purchase menu");
             }
-
-            //    //if (mainMenuUserInputParsedToInt == 1)
-            //    //{
-            //    //    MainMenu.MenuItemsDisplayed();
-            //    //}
-            //else if (mainMenuUserInputParsedToInt == 2)
-            //{
-            //    Console.WriteLine($"(1) Feed Money");
-            //    Console.WriteLine($"(2) Select Product");
-            //    Console.WriteLine($"(3) Finish Transaction");
-            //    string purchaseMenuUserInput = Console.ReadLine();
-            //    int purchaseMenuUserInputParsedToInt = int.Parse(purchaseMenuUserInput);
-
-            //    if (purchaseMenuUserInputParsedToInt == 1)
-            //    {
-            //        Console.WriteLine($"Select dollar amount to feed into vending machine numbers 1 - 5, then select number 6 when ready to select items:");
-            //        Console.WriteLine($"(1) $1.00");
-            //        Console.WriteLine($"(2) $2.00");
-            //        Console.WriteLine($"(3) $5.00");
-            //        Console.WriteLine($"(4) $10.00");
-            //        Console.WriteLine($"(5) $20.00");
-            //        Console.WriteLine($"(6) select vending machine items");
-            //        decimal vendingMachineMoneyBalance = 0;
-            //        string userInputDollarAmountNumber = Console.ReadLine();
-
-
-
-
-            //    }
-            //}
-
-
-
-
-
-
-
-
-            //Purchase Menu (1. Feed Money, 2. Select Product, 3. Finish Transaction)
-            //Dollar Amount List Menu (user can select $1, $2, $5, $10 to add to their moneyFed)
-
-        
     }
 }

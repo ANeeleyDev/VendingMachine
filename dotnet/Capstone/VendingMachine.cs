@@ -14,8 +14,8 @@ using System.IO;
 
 namespace Capstone
 {
-    // This class is the driver of the program.  It contains all the important methods/functions that are the brains
-    // of the vending machine program.
+    // This class is the driver of the program.  It contains all the important methods/functions
+    // that are the brains of the vending machine program.
     public class VendingMachine
     {
         // Create a dictionary that will store all data from the CSV file being pulled from.
@@ -135,18 +135,30 @@ namespace Capstone
             // total inventory.
             else if (purchaseMenuUserInputParsedToInt == 2)
             {
-                DisplayMenuItems();
+                VendingMachineItem firstPrice = inventoryInDictionary["A1"];
+                decimal minimumPrice = firstPrice.ItemPrice;
+
+                
                 Console.WriteLine("");
-                Console.WriteLine("Please enter a code for one of the following items. You have $" + amountFed + " to spend.");
-                //if (amountFed < 0.75M)
-                //{
-                //    Console.WriteLine("Insufficient funds");
-                //    Menu.PurchaseMenu();
-                //    Console.WriteLine("Current money provided: $" + amountFed);
-                //    getPurchaseMenuInput();
-                //}
-                //else
+                
+                foreach (KeyValuePair<string, VendingMachineItem> item in inventoryInDictionary)
                 {
+                    if (item.Value.ItemPrice < minimumPrice)
+                    {
+                        minimumPrice = item.Value.ItemPrice;
+                    }
+                }
+
+                if (amountFed < minimumPrice)
+                {
+                       Console.WriteLine("Insufficient funds. Please add more money.");
+                       Menu.PurchaseMenu();
+                       Console.WriteLine("Current money provided: $" + amountFed);
+                       getPurchaseMenuInput();
+                } else
+                {
+                    DisplayMenuItems();
+                    Console.WriteLine("Please enter a code for one of the following items. You have $" + amountFed + " to spend.");
                     subtractItemFromInventory();
                 }
             }
@@ -164,12 +176,15 @@ namespace Capstone
         // This method subtracts items from the vending machine inventory, as the items are purchased by the user.
         public void subtractItemFromInventory()
         {
+
+
             // BQ Added 10-11-21
             decimal amountAfterSubtraction = 0;
 
             string selectMenuUserInput = Console.ReadLine();
             foreach (KeyValuePair<string, VendingMachineItem> item in inventoryInDictionary)
             {//(inventoryInDictionary.ContainsKey(selectMenuUserInput))
+
                 if (selectMenuUserInput == (item.Key))
                 {
                     // If the amount of items in the inventory is 0, then the user cannot purchase that item.  A message
@@ -189,7 +204,7 @@ namespace Capstone
                     // know how much they have in the machine for purchases.
                     else if (amountFed < item.Value.ItemPrice)
                     {
-                        Console.WriteLine("Insufficient funds, feed more money");
+                        Console.WriteLine("Insufficient funds.  Please add more money.");
                         Menu.PurchaseMenu();
                         Console.WriteLine("Current money provided: $" + amountFed);
                         getPurchaseMenuInput();
@@ -200,7 +215,7 @@ namespace Capstone
                     else
                     {
                         item.Value.ItemAmountInInventory = item.Value.ItemAmountInInventory - 1;
-                        amountAfterSubtraction = amountFed - item.Value.ItemPrice;
+                        //amountAfterSubtraction = amountFed - item.Value.ItemPrice;
                         amountFed = amountFed - item.Value.ItemPrice;
 
                         // The PrintedMessage() method is called for each item, based on that item's type.  The messages
