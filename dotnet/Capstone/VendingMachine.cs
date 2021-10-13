@@ -3,15 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-/*TO DO:
- * Fix bug that takes us to line 148 and tells us invalid entry when we try to close program
- * fix invalid entry so it works when user makes an invalid entry
- * do log
- * write unit tests
- * Add comments
- */
-
-
 namespace Capstone
 {
     // This class is the driver of the program.  It contains all the important methods/functions
@@ -154,12 +145,13 @@ namespace Capstone
             // total inventory.
             else if (purchaseMenuUserInputParsedToInt == 2)
             {
+                // Initialize a minimum price to be the first price in the CSV file, for the loop below.
                 VendingMachineItem firstPrice = inventoryInDictionary["A1"];
                 decimal minimumPrice = firstPrice.ItemPrice;
-
-                
                 Console.WriteLine("");
                 
+                // This foreach loop will check every item in the inventory dictionary, and if that item's price is lower
+                // than the previous minimum price, then the new low price is set as the minimum price.
                 foreach (KeyValuePair<string, VendingMachineItem> item in inventoryInDictionary)
                 {
                     if (item.Value.ItemPrice < minimumPrice)
@@ -168,6 +160,9 @@ namespace Capstone
                     }
                 }
 
+                // If the amount the user feeds into the machine is less than the minimum price, then a message displays that the
+                // user has insufficient funds.  Otherwise, the items to purchase are displayed, and the user has the option to
+                // purchase an item.
                 if (amountFed < minimumPrice)
                 {
                        Console.WriteLine("Insufficient funds. Please add more money.");
@@ -202,10 +197,10 @@ namespace Capstone
         public void subtractItemFromInventory()
         {
             decimal originalAmountFed = 0;
-
             string selectMenuUserInput = Console.ReadLine();
-            //(inventoryInDictionary.ContainsKey(selectMenuUserInput))
 
+                // The if statements below check if the input given by the user is inside the dictionary (i.e., if the vending
+                // machine has that particular slot number).
                 if (inventoryInDictionary.ContainsKey(selectMenuUserInput))
                 {
                     // If the amount of items in the inventory is 0, then the user cannot purchase that item.  A message
@@ -236,11 +231,10 @@ namespace Capstone
                     else
                     {
                         inventoryInDictionary[selectMenuUserInput].ItemAmountInInventory = inventoryInDictionary[selectMenuUserInput].ItemAmountInInventory - 1;
-                        //amountAfterSubtraction = amountFed - item.Value.ItemPrice;
                         originalAmountFed = amountFed;
                         amountFed = amountFed - inventoryInDictionary[selectMenuUserInput].ItemPrice;
 
-                        // Directory and file name
+                        // When a purchase is made, a log is made to the external Log.txt file, and text is formatted per requirements.
                         string directory = Environment.CurrentDirectory;
                         string filename = "Log.txt";
 
@@ -260,7 +254,6 @@ namespace Capstone
                         }
                         catch (Exception e)
                         {
-
                             Console.WriteLine(e.Message);
                         }
 
@@ -272,15 +265,15 @@ namespace Capstone
                         Menu.PurchaseMenu();
                         Console.WriteLine("Current money provided: $" + amountFed);
                         getPurchaseMenuInput();
-
                     }
                 }
                 else
                 {
                 InvalidEntryMenu();
                 }
-
         }
+
+        // This method displays a message that tells the user they entered an invalid entry in one of the menus.
         public void InvalidEntryMenu()
         {
             Console.WriteLine("Invalid entry");
@@ -289,11 +282,13 @@ namespace Capstone
             getPurchaseMenuInput();
         }
 
-        // BQ Added 10-11-21
-        public decimal exactAmountFed { get; private set; } = 0;
 
+        public decimal exactAmountFed { get; private set; } = 0;
         public decimal amountFed { get; private set; } = 0;
 
+        // This method allows for the user to enter money into the vending machine.  The feedmoney menu displays, showing the user
+        // has options to enter money is $1, $2, $5, $10, and $20 amounts.  The user can choose an infinite amount of money
+        // to feed into the machine.  Their amountFed gets updated every time they enter more money.
         public void MoneyFed()
         {
             string feedMoneyUserInput = Console.ReadLine();
@@ -302,39 +297,32 @@ namespace Capstone
             if (feedMoneyUserInputParsed == 1)
             {
                 amountFed += 1;
-
-                // BQ Added 10-11-21
                 exactAmountFed = 1;
             }
             else if (feedMoneyUserInputParsed == 2)
             {
                 amountFed += 2;
-
-                // BQ Added 10-11-21
                 exactAmountFed = 2;
             }
             else if (feedMoneyUserInputParsed == 3)
             {
                 amountFed += 5;
-
-                // BQ Added 10-11-21
                 exactAmountFed = 5;
             }
             else if (feedMoneyUserInputParsed == 4)
             {
                 amountFed += 10;
-
-                // BQ Added 10-11-21
                 exactAmountFed = 10;
             }
             else if (feedMoneyUserInputParsed == 5)
             {
                 amountFed += 20;
-
-                // BQ Added 10-11-21
                 exactAmountFed = 20;
             }
-            else if (feedMoneyUserInputParsed == 6) //return to purchase menu at this point
+            
+            // If the user enters a 6, per the menu, they are returned to the purchase menu and no money is added to their balance
+            // in the machine.
+            else if (feedMoneyUserInputParsed == 6)
             {
                 amountFed += 0;
             }
@@ -343,8 +331,7 @@ namespace Capstone
                 Console.WriteLine($"Invalid number entered, please select a number between 1 and 6");
             }
 
-            // BQ Added 10-11-21
-            // Directory and file name
+            // This logs to the Log.txt file every time the user feeds money into the machine.
             string directory = Environment.CurrentDirectory;
             string filename = "Log.txt";
 
@@ -364,12 +351,12 @@ namespace Capstone
             }
             catch (Exception e)
             {
-
                 Console.WriteLine(e.Message);
             }
         }
 
-
+        // This method displays the menu items in the machine in a specific way (based off the CSV input file).  If the machine
+        // has run out of a particular item, a sold out message is displayed.
         public void DisplayMenuItems()
         {
             foreach (KeyValuePair<string, VendingMachineItem> item in inventoryInDictionary)
@@ -382,11 +369,12 @@ namespace Capstone
                 {
                     Console.WriteLine(item.Key + " | " + item.Value.ItemName + " | $" + item.Value.ItemPrice + " | " + item.Value.ItemAmountInInventory + " in stock");
                 }
-
             }
             Console.WriteLine("");
         }
 
+        // This method will dispense change to the user, first in quarters, then in dimes, then in nickels, and it will then display
+        // a message to the user.
         public void finishTransaction()
         {
             decimal quarterRemainder = amountFed % 0.25M;
@@ -398,8 +386,8 @@ namespace Capstone
 
             Console.WriteLine("Your total change back is $" + totalChangeBack + " (" + numberOfQuarters + " quarters, " + numberOfDimes + " dimes, " + numberOfNickels + " nickels.)");
 
-            // BQ Added 10-11-21
-            // Directory and file name
+            // Every time this method is called, the amount of change, and the vending machine balance at the end of the transaction
+            // is printed to the Log.txt CSV input file.
             string directory = Environment.CurrentDirectory;
             string filename = "Log.txt";
 
@@ -419,32 +407,8 @@ namespace Capstone
             }
             catch (Exception e)
             {
-
                 Console.WriteLine(e.Message);
             }
         }
-
-
-        public virtual void writingToALog()
-        {
-            string directory = Environment.CurrentDirectory;
-            string filename = "Log.txt";            
-            string fullPath = Path.Combine(directory, filename);
-
-            try
-            {
-                using (StreamWriter sw = new StreamWriter(fullPath, true))
-                {
-                    sw.Write(DateTime.Now + " ");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-        }
-
     }
-
 }

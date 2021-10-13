@@ -5,6 +5,8 @@ using System.IO;
 
 namespace Capstone
 {
+    // This class implements the IPrintedMessage interface.  The properties are all for a vending machine item (item name, item price,
+    // amount of item in inventory).
     public class VendingMachineItem : IPrintedMessage
     {
         public string ItemName { get; set; }
